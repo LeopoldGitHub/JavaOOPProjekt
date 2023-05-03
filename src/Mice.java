@@ -1,7 +1,11 @@
 public class Mice extends PCParts{
-    protected int buttons;
-    public Mice(int buttons,String brand,String model,int price){
+    protected int dpi;
+    public Mice(int dpi,String brand,String model,float price){
         super(brand,model,price);
-        this.buttons=buttons;
+        this.dpi =dpi;
+    }
+    @Override
+    public String toString() {
+        return super.toString()+String.format("DPI: %5d",dpi);
     }
 }
