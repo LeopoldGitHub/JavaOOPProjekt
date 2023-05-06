@@ -11,7 +11,7 @@ public abstract class PCParts {
 
     @Override
     public String toString() {
-        return String.format("Brand: %15s, Model: %10s, Price: %8.02f ",brand,model,price);
+        return String.format("Brand: %15s, Model: %10s, Price: %8.02f, ",brand,model,price);
 
     }
 }

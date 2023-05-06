@@ -2,27 +2,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
+
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static ArrayList<PCParts> shopInventory = new ArrayList<>();
 
     public static void main(String[] args) {
-        createTestDatea();
+        createTestData();
 
 
         while (true) {
             mainMenu();
             inputMainMenu();
-//            for (PCParts part :
-//                    shopInventory) {
-//                System.out.println(part);
-//            }
+
         }
 
 
     }
 
-    protected static void createTestDatea() {
+
+    protected static void createTestData() {
         shopInventory.add(new Mice(2000, "Logitech", "G5", 90));
         shopInventory.add(new Mice(1000, "Logitech", "G3", 40));
         shopInventory.add(new Mice(20000, "Logitech", "PRO", 120));
@@ -78,97 +77,153 @@ public class Main {
                 Bitte wählen:
                 """);
 
-
         switch (intInput()) {
-            case 1 -> createMotherboard();
-            case 2 -> createDisplay();
-            case 3 -> createKeyboard();
-            case 4 -> createMice();
+            case 1 -> addMotherboard();
+            case 2 -> addDisplay();
+            case 3 -> addKeyboard();
+            case 4 -> addMice();
         }
 
 
     }
 
-
-    protected static void createMotherboard() {
+    protected static void addMotherboard() {
         while (true) {
-
-            TrippleTuple temp = pcPartsInput();
-            System.out.println("Bitte Chipset angeben:");
-            String chipset = sc.nextLine();
-            if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || chipset.isEmpty()) {
-                System.out.println("Fehlerhafte Eingabe");
-                return;
+            try {
+                shopInventory.add(createMotherboard());
+                if (anotherInput("Möchten sie noch ein Mainboard Hinzufügen?")) return;
+            } catch (RuntimeException e) {
+                break;
             }
-            shopInventory.add(new Motherboard(chipset, temp.brand, temp.model, temp.price));
-            if (anotherInput("Möchten sie noch ein Product Hinzufügen?")) return;
-        }
-    }
-
-
-    protected static void createDisplay() {
-        while (true) {
-            TrippleTuple temp = pcPartsInput();
-            System.out.println("Bitte Display Größe in Zoll angeben:");
-            int size = intInput();
-            if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || size == 0) {
-                System.out.println("Fehlerhafte Eingabe");
-                return;
-            }
-            shopInventory.add(new Display(size, temp.brand, temp.model, temp.price));
-            if (anotherInput("Möchten sie noch ein Product Hinzufügen?")) return;
-
         }
 
     }
 
-    protected static void createKeyboard() {
+    protected static void addDisplay() {
         while (true) {
-            TrippleTuple temp = pcPartsInput();
-            System.out.println("Bitte Keyboard Layout angeben:");
-            String layout = sc.nextLine();
-            if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || layout.isEmpty()) {
-                System.out.println("Fehlerhafte Eingabe");
-                return;
+            try {
+                shopInventory.add(createDisplay());
+                if (anotherInput("Möchten sie noch ein Monitor Hinzufügen?")) return;
+            } catch (RuntimeException e) {
+                break;
             }
-            shopInventory.add(new Keyboard(layout, temp.brand, temp.model, temp.price));
-            if (anotherInput("Möchten sie noch ein Product Hinzufügen?")) return;
 
+        }
+    }
+
+    protected static void addKeyboard() {
+        while (true) {
+            try {
+                shopInventory.add(createKeyboard());
+                if (anotherInput("Möchten sie noch eine Tastatur Hinzufügen?")) return;
+            } catch (RuntimeException e) {
+                break;
+            }
         }
 
     }
 
-    protected static void createMice() {
+    protected static void addMice() {
         while (true) {
-            TrippleTuple temp = pcPartsInput();
-            System.out.println("Bitte DPI vom Sensor Angeben:");
-            int dpi = intInput();
-            if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || dpi == 0) {
-                System.out.println("Fehlerhafte Eingabe");
-                return;
+            try {
+                shopInventory.add(createMice());
+                if (anotherInput("Möchten sie noch eine Maus Hinzufügen?")) return;
+            } catch (RuntimeException e) {
+                break;
             }
-            shopInventory.add(new Mice(dpi, temp.brand, temp.model, temp.price));
-            if (anotherInput("Möchten sie noch ein Product Hinzufügen?")) return;
-
-
         }
+    }
+
+
+    protected static Motherboard createMotherboard() {
+        TrippleTuple temp = pcPartsInput();
+        System.out.println("Bitte Chipset angeben:");
+        String chipset = sc.nextLine().trim();
+        if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || chipset.isEmpty()) {
+            System.out.println("Fehlerhafte Eingabe");
+            throw new RuntimeException();
+        }
+        return new Motherboard(chipset, temp.brand, temp.model, temp.price);
+
+    }
+
+
+    protected static Display createDisplay() {
+
+        TrippleTuple temp = pcPartsInput();
+        System.out.println("Bitte Display Größe in Zoll angeben:");
+        int size = intInput();
+        if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || size == 0) {
+            System.out.println("Fehlerhafte Eingabe");
+            throw new RuntimeException();
+        }
+        return new Display(size, temp.brand, temp.model, temp.price);
+
+
+    }
+
+    protected static Keyboard createKeyboard() {
+
+        TrippleTuple temp = pcPartsInput();
+        System.out.println("Bitte Keyboard Layout angeben:");
+        String layout = sc.nextLine().trim();
+        if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || layout.isEmpty()) {
+            System.out.println("Fehlerhafte Eingabe");
+            throw new RuntimeException();
+        }
+        return new Keyboard(layout, temp.brand, temp.model, temp.price);
+
+    }
+
+
+    protected static Mice createMice() {
+
+        TrippleTuple temp = pcPartsInput();
+        System.out.println("Bitte DPI vom Sensor Angeben:");
+        int dpi = intInput();
+        if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || dpi == 0) {
+            System.out.println("Fehlerhafte Eingabe");
+            throw new RuntimeException();
+        }
+        return new Mice(dpi, temp.brand, temp.model, temp.price);
+
+
     }
 
 
     protected static void changeProduct() {
-        if (shopInventory.size()==0) {
+        if (shopInventory.size() == 0) {
             System.out.println("Keine Produkte vorhanden");
             return;
         }
         IntStream
-                .range(0,shopInventory.size())
-                .forEach(i -> System.out.printf("Index: %3d Typ: %10s\t%s\n",i+1,shopInventory.get(i).getClass().getName(),shopInventory.get(i)));
+                .range(0, shopInventory.size())
+                .forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName(), shopInventory.get(i)));
         System.out.println("Bitte Nummer des Zu bearbeitenden Objektes eingeben:");
         int input = intInput();
-        if (input==0) return;
+        if (input == 0) return;
+        input--;
+        switch (shopInventory.get(input).getClass().getName()) {
+            case "Display" -> {
+                System.out.println("Display");
+                System.out.println(shopInventory.get(input));
 
+            }
+            case "Keyboard" -> {
+                System.out.println("Keyboard");
+                System.out.println(shopInventory.get(input));
 
+            }
+            case "Mice" -> {
+                System.out.println("Mice");
+                System.out.println(shopInventory.get(input));
 
+            }
+            case "Motherboard" -> {
+                System.out.println("Motherboard");
+                System.out.println(shopInventory.get(input));
+            }
+        }
 
         System.out.println("change Product");
     }
@@ -179,9 +234,10 @@ public class Main {
             String input = sc.nextLine();
             int n = 0;
             for (PCParts part : shopInventory)
-                if (part.toString().toLowerCase().contains(input.toLowerCase())) System.out.printf("%3d.: %s\n", ++n, part);
+                if (part.toString().toLowerCase().contains(input.toLowerCase()))
+                    System.out.printf("%3d.: %s\n", ++n, part);
 
-            System.out.printf("%3d Übereinstimmungen gefunden.\n",n);
+            System.out.printf("%3d Übereinstimmungen gefunden.\n", n);
             if (anotherInput("Möchten sie noch weiter Suchen")) return;
 
         }
@@ -194,9 +250,9 @@ public class Main {
     }
 
     protected static int intInput() {
-        String input = sc.nextLine();
+        String input = sc.nextLine().trim();
 
-        if (input.trim().matches("[0-9]+")) {
+        if (input.matches("[0-9]+")) {
             return Integer.parseInt(input);
         } else {
             return 0;
@@ -207,9 +263,9 @@ public class Main {
     protected static TrippleTuple pcPartsInput() {
 
         System.out.println("Bitte Marke angeben:");
-        String brand = sc.nextLine();
+        String brand = sc.nextLine().trim();
         System.out.println("Bitte Model angeben:");
-        String model = sc.nextLine();
+        String model = sc.nextLine().trim();
         System.out.println("Bitte Preis angeben:");
         float price = Float.parseFloat(sc.nextLine().replace(",", "."));
         return new TrippleTuple(brand, model, price);
@@ -218,7 +274,7 @@ public class Main {
 
     protected static boolean anotherInput(String question) {
         System.out.printf("%s (ja / nein)\n", question);
-        String input = sc.nextLine().toLowerCase();
+        String input = sc.nextLine().trim().toLowerCase();
         return !input.matches("ja|j|yes|y");
     }
 
