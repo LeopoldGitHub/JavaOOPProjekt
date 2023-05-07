@@ -52,7 +52,7 @@ public class Main {
         if (input.matches("[0-4]")) {
             switch (Integer.parseInt(input)) {
 
-                case 0 -> System.exit(0);
+                case 0 -> quitShop();
                 case 1 -> createProduct();
                 case 2 -> changeProduct();
                 case 3 -> searchProduct();
@@ -196,37 +196,30 @@ public class Main {
             System.out.println("Keine Produkte vorhanden");
             return;
         }
-        IntStream
-                .range(0, shopInventory.size())
-                .forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName(), shopInventory.get(i)));
-        System.out.println("Bitte Nummer des Zu bearbeitenden Objektes eingeben:");
-        int input = intInput();
-        if (input == 0) return;
-        input--;
-        switch (shopInventory.get(input).getClass().getName()) {
-            case "Display" -> {
-                System.out.println("Display");
-                System.out.println(shopInventory.get(input));
+        while (true) {
+            showProducts();
+            System.out.println("Bitte Nummer des Zu bearbeitenden Objektes eingeben:");
+            int input = intInput();
+            if (input == 0) return;
+            input--;
+            try {
 
-            }
-            case "Keyboard" -> {
-                System.out.println("Keyboard");
-                System.out.println(shopInventory.get(input));
 
+                switch (shopInventory.get(input).getClass().getName()) {
+                    case "Display" -> shopInventory.set(input, createDisplay());
+                    case "Keyboard" -> shopInventory.set(input, createKeyboard());
+                    case "Mice" -> shopInventory.set(input, createMice());
+                    case "Motherboard" -> shopInventory.set(input, createMotherboard());
+                }
+            } catch (RuntimeException e) {
+                System.out.println("Produkt konnte aufgrund leerer Eingabewerte nicht gespeichert werden");
+                return;
             }
-            case "Mice" -> {
-                System.out.println("Mice");
-                System.out.println(shopInventory.get(input));
-
-            }
-            case "Motherboard" -> {
-                System.out.println("Motherboard");
-                System.out.println(shopInventory.get(input));
-            }
+            if (anotherInput("Möchten sie noch ein Produkt bearbeiten?")) return;
         }
-
-        System.out.println("change Product");
     }
+
+
 
     protected static void searchProduct() {
         while (true) {
@@ -245,10 +238,33 @@ public class Main {
     }
 
     protected static void deleteProduct() {
-        System.out.println("delete Product");
+        showProducts();
+        System.out.println("Zu löschendes produkt auswählen:");
+        int input = intInput();
+        if (input == 0 || input > shopInventory.size()) {
+            System.out.println("Fehlerhafte Eingabe");
+            return;
+        }
+        input--;
+        if (!anotherInput(String.format("Soll\n %s\n wirklich gelöscht werden?", shopInventory.get(input)))) {
+            shopInventory.remove(input);
+        }
 
     }
 
+    protected static void quitShop(){
+        if (!anotherInput("Soll das Programm wirklich beendet werden?")){
+            System.out.println("„PC Shop wurde beendet");
+            System.exit(0);
+        }
+        System.out.println("Fehlerhafte Eingabe");
+
+    }
+    private static void showProducts() {
+        IntStream
+                .range(0, shopInventory.size())
+                .forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName(), shopInventory.get(i)));
+    }
     protected static int intInput() {
         String input = sc.nextLine().trim();
 
