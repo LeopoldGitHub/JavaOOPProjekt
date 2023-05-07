@@ -4,6 +4,9 @@ import java.util.stream.IntStream;
 
 
 public class Main {
+    /***
+     * Scanner
+     */
     static Scanner sc = new Scanner(System.in);
     static ArrayList<PCParts> shopInventory = new ArrayList<>();
 
