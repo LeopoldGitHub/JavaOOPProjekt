@@ -22,6 +22,8 @@ public class Main {
 		shopInventory.add(new Mice(20000, "Logitech", "PRO", 120));
 		shopInventory.add(new Display(29, "Asus", "PB29AB", 400));
 		shopInventory.add(new Display(29, "GIGABYTE", "GP29EH", 500));
+		shopInventory.add(new Motherboard("Z99", "Asus", "RampageV", 349.99f));
+		shopInventory.add(new Keyboard("ISO", "Logitech", "G15", 99.99f));
 		
 	}
 	
@@ -140,11 +142,11 @@ public class Main {
 			System.out.println("Bitte Nummer des Zu bearbeitenden Objektes eingeben:");
 			int input = intInput();
 			if (input < 1 || input > shopInventory.size()) throw new InputMismatchException();
-			switch (shopInventory.get(input).getClass().getName()) {
-				case "bfw.project.leopold.Display" -> shopInventory.set(--input, createDisplay());
-				case "bfw.project.leopold.Keyboard" -> shopInventory.set(--input, createKeyboard());
-				case "bfw.project.leopold.Mice" -> shopInventory.set(--input, createMice());
-				case "bfw.project.leopold.Motherboard" -> shopInventory.set(--input, createMotherboard());
+			switch (shopInventory.get(--input).getClass().getName()) {
+				case "bfw.project.leopold.Display" -> shopInventory.set(input, createDisplay());
+				case "bfw.project.leopold.Keyboard" -> shopInventory.set(input, createKeyboard());
+				case "bfw.project.leopold.Mice" -> shopInventory.set(input, createMice());
+				case "bfw.project.leopold.Motherboard" -> shopInventory.set(input, createMotherboard());
 			}
 			if (anotherInput("Möchten sie noch ein Produkt bearbeiten?")) return;
 		}
@@ -188,7 +190,7 @@ public class Main {
 	private static void showProducts() {
 		IntStream
 				.range(0, shopInventory.size())
-				.forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
+				.forEach(i -> System.out.printf("%3d Typ: %12s, %s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
 	}
 	
 	protected static int intInput() {
