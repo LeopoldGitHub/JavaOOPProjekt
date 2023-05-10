@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
- * the Subclass for saving a Keyboard
+ * the Subclass for saving a bfw.project.leopold.Keyboard
  */
-public class Keyboard extends PCParts{
+class Keyboard extends PCParts{
     protected String layout;
     
     /**

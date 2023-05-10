@@ -1,3 +1,5 @@
+package bfw.project.leopold;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -23,7 +25,7 @@ public class Main {
 		
 	}
 	
-	public static void mainMenu() {
+	protected static void mainMenu() {
 		try {
 			System.out.println("""
 					-------------------------------------------------------------------------------------
@@ -51,7 +53,7 @@ public class Main {
 		}
 	}
 	
-	public static void createProduct() throws EmptyFieldException {
+	protected static void createProduct() throws EmptyFieldException {
 		while (true) {
 			System.out.println("""
 					-------------------------------------------------------------------------------------
@@ -137,13 +139,12 @@ public class Main {
 			showProducts();
 			System.out.println("Bitte Nummer des Zu bearbeitenden Objektes eingeben:");
 			int input = intInput();
-			if (input < 1 || input > shopInventory.size()) throw new RuntimeException();
-			input--;
+			if (input < 1 || input > shopInventory.size()) throw new InputMismatchException();
 			switch (shopInventory.get(input).getClass().getName()) {
-				case "Display" -> shopInventory.set(input, createDisplay());
-				case "Keyboard" -> shopInventory.set(input, createKeyboard());
-				case "Mice" -> shopInventory.set(input, createMice());
-				case "Motherboard" -> shopInventory.set(input, createMotherboard());
+				case "bfw.project.leopold.Display" -> shopInventory.set(--input, createDisplay());
+				case "bfw.project.leopold.Keyboard" -> shopInventory.set(--input, createKeyboard());
+				case "bfw.project.leopold.Mice" -> shopInventory.set(--input, createMice());
+				case "bfw.project.leopold.Motherboard" -> shopInventory.set(--input, createMotherboard());
 			}
 			if (anotherInput("Möchten sie noch ein Produkt bearbeiten?")) return;
 		}
@@ -168,11 +169,8 @@ public class Main {
 		showProducts();
 		System.out.println("Zu löschendes produkt auswählen:");
 		int input = intInput();
-		if (input < 1 || input > shopInventory.size()) {
-			throw new InputMismatchException();
-		}
-		input--;
-		if (!anotherInput(String.format("Soll\n %s\n wirklich gelöscht werden?", shopInventory.get(input)))) {
+		if (input < 1 || input > shopInventory.size()) throw new InputMismatchException();
+		if (!anotherInput(String.format("Soll\n %s\n wirklich gelöscht werden?", shopInventory.get(--input)))) {
 			shopInventory.remove(input);
 		}
 		
@@ -190,7 +188,7 @@ public class Main {
 	private static void showProducts() {
 		IntStream
 				.range(0, shopInventory.size())
-				.forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName(), shopInventory.get(i)));
+				.forEach(i -> System.out.printf("%3d Typ: %10s\t%s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
 	}
 	
 	protected static int intInput() {
@@ -211,9 +209,7 @@ public class Main {
 	protected static boolean anotherInput(String question) {
 		System.out.printf("%s (ja / nein)\n", question);
 		String input = sc.nextLine().trim().toLowerCase();
-		if (!input.matches("ja|j|yes|y|no|n|nein")) {
-			throw new InputMismatchException();
-		}
+		if (!input.matches("ja|j|yes|y|no|n|nein")) throw new InputMismatchException();
 		return !input.matches("ja|j|yes|y");
 	}
 	

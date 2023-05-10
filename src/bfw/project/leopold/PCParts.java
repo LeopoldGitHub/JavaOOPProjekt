@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
  * Superclass for our PCShop that defines the basic structure of our Objects
  */
-public abstract class PCParts {
+abstract class PCParts {
 	protected String brand, model;
 	protected float price;
 	

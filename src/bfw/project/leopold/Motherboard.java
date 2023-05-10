@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
- * the Subclass for saving a Motherboard
+ * the Subclass for saving a bfw.project.leopold.Motherboard
  */
-public class Motherboard extends PCParts {
+class Motherboard extends PCParts {
 	protected String chipset;
 	
 	/**

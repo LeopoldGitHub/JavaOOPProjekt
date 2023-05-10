@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
- * a custom Class to simulate a Tuple to enable returning of a set of mixed Types while keeping the Class PCParts abstract
+ * a custom Class to simulate a Tuple to enable returning of a set of mixed Types while keeping the Class bfw.project.leopold.PCParts abstract
  */
-public class CustomTuple {
+class CustomTuple {
 	protected String brand, model;
 	protected float price;
 	

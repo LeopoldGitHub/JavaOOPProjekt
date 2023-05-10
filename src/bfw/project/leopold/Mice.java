@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
- * the Subclass for saving a Mice
+ * the Subclass for saving a bfw.project.leopold.Mice
  */
-public class Mice extends PCParts{
+class Mice extends PCParts{
     protected int dpi;
     /**
      * constructor

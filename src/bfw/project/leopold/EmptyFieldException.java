@@ -1,3 +1,5 @@
+package bfw.project.leopold;
+
 /**
  * custom exception for Cases where any variable is Empty or in case of numbers 0
  */

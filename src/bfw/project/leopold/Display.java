@@ -1,7 +1,9 @@
+package bfw.project.leopold;
+
 /**
- * the Subclass for saving a Display
+ * the Subclass for saving a bfw.project.leopold.Display
  */
-public class Display extends PCParts{
+class Display extends PCParts{
     protected int size;
     
     /**
