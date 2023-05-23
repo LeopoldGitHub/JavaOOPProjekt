@@ -5,8 +5,14 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
+/**
+ * a small programm to manage an inventory of a PCShop
+ */
 public class Main {
 	static Scanner sc = new Scanner(System.in);
+	/**
+	 * ArrayList to save all the shop inventory.
+	 */
 	static ArrayList<PCParts> shopInventory = new ArrayList<>();
 	
 	public static void main(String[] args) {
@@ -16,6 +22,9 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * inputs some testdata into the ArrayList to enable easier testing.
+	 */
 	protected static void createTestData() {
 		shopInventory.add(new Mice(2000, "Logitech", "G5", 90));
 		shopInventory.add(new Mice(1000, "Logitech", "G3", 40));
@@ -27,6 +36,9 @@ public class Main {
 		
 	}
 	
+	/**
+	 * Main menu of the programm
+	 */
 	protected static void mainMenu() {
 		try {
 			System.out.println("""
@@ -55,6 +67,11 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * methode to create a new object
+	 * will repeat until an exception is thrown or the user says no when asked
+	 * @throws EmptyFieldException Exception for the case of an empty field in an object
+	 */
 	protected static void createProduct() throws EmptyFieldException {
 		while (true) {
 			System.out.println("""
@@ -77,16 +94,18 @@ public class Main {
 				case 3 -> shopInventory.add(createKeyboard());
 				case 4 -> shopInventory.add(createMice());
 				default -> throw new InputMismatchException();
-				
 			}
 			if (anotherInput("Möchten sie noch ein Produkt anlegen?")) {
 				break;
 			}
-			
 		}
-		
 	}
 	
+	/**
+	 * methode to create a new motherboard object
+	 * @return a new Motherboard object
+	 * @throws EmptyFieldException in case of an empty field
+	 */
 	protected static Motherboard createMotherboard() throws EmptyFieldException {
 		CustomTuple temp = pcPartsInput();
 		System.out.println("Bitte Chipset angeben:");
@@ -95,9 +114,13 @@ public class Main {
 			throw new EmptyFieldException("Motherboard");
 		}
 		return new Motherboard(chipset, temp.brand, temp.model, temp.price);
-		
 	}
 	
+	/**
+	 * methode to create a new display object
+	 * @return a new Display object
+	 * @throws EmptyFieldException in case of an empty field
+	 */
 	protected static Display createDisplay() throws EmptyFieldException {
 		CustomTuple temp = pcPartsInput();
 		System.out.println("Bitte Display Größe in Zoll angeben:");
@@ -106,21 +129,28 @@ public class Main {
 			throw new EmptyFieldException("Monitor");
 		}
 		return new Display(size, temp.brand, temp.model, temp.price);
-		
 	}
 	
+	/**
+	 * methode to create a new keyboard object
+	 * @return a new Keyboard object
+	 * @throws EmptyFieldException in case of an empty field
+	 */
 	protected static Keyboard createKeyboard() throws EmptyFieldException {
 		CustomTuple temp = pcPartsInput();
 		System.out.println("Bitte Keyboard Layout angeben:");
 		String layout = sc.nextLine().trim();
 		if (temp.model.isEmpty() || temp.brand.isEmpty() || temp.price == 0 || layout.isEmpty()) {
 			throw new EmptyFieldException("Tastatur");
-			
 		}
 		return new Keyboard(layout, temp.brand, temp.model, temp.price);
-		
 	}
 	
+	/**
+	 * methode to create a new mice object
+	 * @return a new Mice object
+	 * @throws EmptyFieldException in case of an empty field
+	 */
 	protected static Mice createMice() throws EmptyFieldException {
 		CustomTuple temp = pcPartsInput();
 		System.out.println("Bitte DPI vom Sensor Angeben:");
@@ -129,9 +159,12 @@ public class Main {
 			throw new EmptyFieldException("Maus");
 		}
 		return new Mice(dpi, temp.brand, temp.model, temp.price);
-		
 	}
 	
+	/**
+	 * used to replace an object with another object of the same type with newly inserted value,s
+	 * @throws EmptyFieldException propagates the EmptyFieldException from the createMethods
+	 */
 	protected static void changeProduct() throws EmptyFieldException {
 		if (shopInventory.size() == 0) {
 			System.out.println("Keine Produkte vorhanden");
@@ -152,6 +185,9 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * used to search all the products for a match to the provided input
+	 */
 	protected static void searchProduct() {
 		while (true) {
 			System.out.println("Wonach möchten Sie suchen?");
@@ -167,6 +203,9 @@ public class Main {
 		
 	}
 	
+	/**
+	 * to delete an object from the ArrayList
+	 */
 	protected static void deleteProduct() {
 		showProducts();
 		System.out.println("Zu löschendes produkt auswählen:");
@@ -178,25 +217,37 @@ public class Main {
 		
 	}
 	
+	/**
+	 * quits the shop after asking for a conformation
+	 */
 	protected static void quitShop() {
 		if (!anotherInput("Soll das Programm wirklich beendet werden?")) {
 			System.out.println("„PC Shop wurde beendet");
 			System.exit(0);
 		}
-		System.out.println("Fehlerhafte Eingabe");
-		
 	}
 	
+	/**
+	 * loops through the shop inventory and prints its content in the console
+	 */
 	private static void showProducts() {
 		IntStream
 				.range(0, shopInventory.size())
 				.forEach(i -> System.out.printf("%3d Typ: %12s, %s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
 	}
 	
+	/**
+	 *
+	 * @return input as integer
+	 */
 	protected static int intInput() {
 		return Integer.parseInt(sc.nextLine().trim());
 	}
 	
+	/**
+	 * gets the inputs that are shared between all Products.
+	 * @return the 3 variables that all subclasses need to be created. (String brand, String model, Float price)
+	 */
 	protected static CustomTuple pcPartsInput() {
 		System.out.println("Bitte Marke angeben:");
 		String brand = sc.nextLine().trim();
@@ -208,6 +259,11 @@ public class Main {
 		
 	}
 	
+	/**
+	 *
+	 * @param question what should be asked.
+	 * @return true if the answer was no, false if yes
+	 */
 	protected static boolean anotherInput(String question) {
 		System.out.printf("%s (ja / nein)\n", question);
 		String input = sc.nextLine().trim().toLowerCase();
