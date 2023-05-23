@@ -194,7 +194,7 @@ public class Main {
 			String input = sc.nextLine();
 			int n = 0;
 			for (PCParts part : shopInventory)
-				if (part.toString().contains(input))
+				if (part.toString().contains(input)||part.getClass().getName().contains(input))
 					System.out.printf("%3d.: %s\n", ++n, part);
 			System.out.printf("%3d Übereinstimmungen gefunden.\n", n);
 			if (anotherInput("Möchten sie noch weiter Suchen")) return;
@@ -233,7 +233,7 @@ public class Main {
 	private static void showProducts() {
 		IntStream
 				.range(0, shopInventory.size())
-				.forEach(i -> System.out.printf("%3d Typ: %12s, %s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
+				.forEach(i -> System.out.printf("%3d Type: %12s, %s\n", i + 1, shopInventory.get(i).getClass().getName().replace("bfw.project.leopold.", ""), shopInventory.get(i)));
 	}
 	
 	/**

@@ -24,6 +24,6 @@ class Display extends PCParts{
      */
     @Override
     public String toString() {
-        return super.toString()+String.format("Größe : %3d",size);
+        return super.toString()+String.format("Größe:\t%3d",size);
     }
 }

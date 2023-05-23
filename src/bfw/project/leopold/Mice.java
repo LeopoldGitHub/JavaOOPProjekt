@@ -22,6 +22,6 @@ class Mice extends PCParts{
      */
     @Override
     public String toString() {
-        return super.toString()+String.format("DPI: %5d",dpi);
+        return super.toString()+String.format("DPI:\t\t%5d",dpi);
     }
 }

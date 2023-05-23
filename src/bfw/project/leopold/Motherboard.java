@@ -26,7 +26,7 @@ class Motherboard extends PCParts {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + String.format("Chipset: %5s", chipset);
+		return super.toString() + String.format("Chipset: %s", chipset);
 	}
 	
 }

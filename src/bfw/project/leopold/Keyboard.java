@@ -23,6 +23,6 @@ class Keyboard extends PCParts{
      */
     @Override
     public String toString() {
-        return super.toString()+String.format("Layout: %10s",layout);
+        return super.toString()+String.format("Layout:\t%s",layout);
     }
 }
